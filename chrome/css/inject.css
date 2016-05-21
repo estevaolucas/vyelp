@@ -1,5 +1,5 @@
 .vyelp {
-  margin: 20px auto 60px;
+  margin: 40px auto 60px;
   max-height: 0;
   overflow: hidden;
   transition: max-height .5s ease-out;

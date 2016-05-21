@@ -1,3 +1,10 @@
 {
-
+  "l10nHeader": {
+    "message":"YouTube videos",
+    "description":"Videos block title"
+  },
+  "l10nDisclaimer": {
+    "message":"Videos loaded from YouTube that are nearby this bussiness location",
+    "description":"Disclaimer for users about the origin of videos"
+  }
 }

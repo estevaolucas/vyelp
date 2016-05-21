@@ -25,7 +25,7 @@ class Vyelp {
   fetchVideos() {
     $.ajax({
       url: `${YOUTUBE_API}/search?part=snippet&type=video&location=${this.location.latitude},${this.location.longitude}&locationRadius=10km&key=${YOUTUBE_KEY}`,
-      success: $.proxy(this.buildStructure, this)
+      success: $.proxy(this.buildStructure, this),
       error: function(response) {
         console.log('Error fetching videos', response);
       }
@@ -77,6 +77,15 @@ class Vyelp {
         this.preloadThumbnail(3);
       }
 
+      // disclaimer message
+      const $disclaimer = $('<div class="arrange_unit arrange_unit--fill" />')
+        .text(chrome.i18n.getMessage("l10nDisclaimer"))
+
+      $('<h2 />')
+        .text(chrome.i18n.getMessage("l10nHeader"))
+        .prependTo(this.$container.parent())
+        .after($disclaimer);
+
       this.render();
     }
   }
@@ -84,7 +93,7 @@ class Vyelp {
   openVideo(e) {
     let $item = $(e.target).closest('.photo'),
       meta = $item.data('meta'),
-      $modal = $(html.videoModal(meta.player.embedHtml, meta));
+      $modal = $(html.videoModal(meta));
 
     $modal
       .show()
@@ -234,7 +243,7 @@ const html = {
     </button>`;
   },
 
-  videoModal: (iframe, data) => {
+  videoModal: (data) => {
     return `<div class="modal modal--large vyelp-modal" data-component-bound="true">
       <div class="modal_inner">
         <div class="modal_close js-modal-close">×</div>
@@ -243,7 +252,7 @@ const html = {
             <h2>${data.snippet.title}</h2>
           </div>
           <div class="modal_body">
-            <iframe height="360" src="//www.youtube.com/embed/${data.id}?rel=0&amp;autoplay=1" frameborder="0" allowfullscreen></iframe>
+            <iframe height="360" src="//www.youtube.com/embed/${data.id.videoId}?rel=0&amp;autoplay=1" frameborder="0" allowfullscreen></iframe>
 
             <div class="modal_section u-bg-color">
               Video loaded from Vyelp chrome extension!
