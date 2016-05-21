@@ -13,29 +13,19 @@ chrome.extension.sendMessage({}, function(response) {
   }, 10);
 }); 
 
-const YOUTUBE_KEY = ' AIzaSyCaKJByB-7jJY_2E3boyJ78p0Jv8oeuriI';
+const YOUTUBE_KEY = 'AIzaSyCaKJByB-7jJY_2E3boyJ78p0Jv8oeuriI';
+const YOUTUBE_API = 'https://www.googleapis.com/youtube/v3';
 
 class Vyelp {
   constructor(location) {
     this.location = location;
-    this.baseYTApi = 'https://www.googleapis.com/youtube/v3';
-
     this.fetchVideos();
   }
 
   fetchVideos() {
     $.ajax({
-      url: `${this.baseYTApi}/search?part=snippet&type=video&location=${this.location.latitude},${this.location.longitude}&locationRadius=10km&key=${YOUTUBE_KEY}`,
-      success: $.proxy((response) => {
-        let ids = response.items.map((item) => {
-            return item.id.videoId;
-          }).join(',');
-
-        $.ajax({
-          url: `${this.baseYTApi}/videos?id=${ids}&part=snippet,player&key=${YOUTUBE_KEY}`,
-          success: $.proxy(this.buildStructure, this)
-        })
-      }, this),
+      url: `${YOUTUBE_API}/search?part=snippet&type=video&location=${this.location.latitude},${this.location.longitude}&locationRadius=10km&key=${YOUTUBE_KEY}`,
+      success: $.proxy(this.buildStructure, this)
       error: function(response) {
         console.log('Error fetching videos', response);
       }
@@ -99,6 +89,7 @@ class Vyelp {
     $modal
       .show()
       .appendTo('body')
+      // close modal when its overlay is clicked
       .on('click', $.proxy(this.closeVideo, this))
       .find('.js-modal-close', $.proxy(this.closeVideo, this))
   }
@@ -127,6 +118,7 @@ class Vyelp {
       let $prev = $visible.first().prev('.photo'),
         $elements = $prev.length ? $prev.add($visible) : $visible;
 
+      // disable/enable pagination buttons
       $button.attr('disabled', $prev.prevAll('.photo').length == 0);
       this.$nextButton.attr('disabled', false);
 
@@ -147,6 +139,7 @@ class Vyelp {
       let $next = $visible.last().next('.photo'),
         isToDisable = $next.nextAll('.photo').length == 0;
 
+      // disable/enable pagination buttons
       $button.attr('disabled', isToDisable);
       this.$prevButton.attr('disabled', false);
 
@@ -183,7 +176,7 @@ class Vyelp {
   }
 
   render() {
-    // animation to apper comming from CSS
+    // animation to appear comming from CSS
     setTimeout(() => {
       this.$container.addClass('show')
 
@@ -194,7 +187,6 @@ class Vyelp {
 
     // close video modal when esc is pressed
     $(document).keypress($.proxy((e) => { 
-      debugger;
       if (e.keyCode == 27) { 
         this.closeVideo();
       }
