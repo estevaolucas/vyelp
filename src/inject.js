@@ -83,6 +83,8 @@ class Vyelp {
         this.$nextButton = $(html.nextButton())
           .on('click', $.proxy(this.onPaginationClicked, this))
           .prependTo(this.$container);       
+
+        this.preloadThumbnail(3);
       }
 
       this.render();
@@ -142,10 +144,18 @@ class Vyelp {
       })
 
     } else {
-      let $next = $visible.last().next('.photo');
+      let $next = $visible.last().next('.photo'),
+        isToDisable = $next.nextAll('.photo').length == 0;
 
-      $button.attr('disabled', $next.nextAll('.photo').length == 0);
+      $button.attr('disabled', isToDisable);
       this.$prevButton.attr('disabled', false);
+
+      // preload next image to avoid a blink on next pagination
+      if (!isToDisable) {
+        let $nextToPreload = $next.next('.photo');
+
+        this.preloadThumbnail(this.$items.index($nextToPreload));
+      }
 
       $visible.add($next).each((i, item) => {
         let $item = $(item);
@@ -160,6 +170,16 @@ class Vyelp {
         }
       })
     }
+  }
+
+  // preload image to avoid a blink in pagination trasition
+  preloadThumbnail(index) {
+    let item = this.videos[index], 
+      url = item.snippet.thumbnails.medium.url,
+      image = new Image();
+
+    image.src = url;
+    image.onload = () => console.log(`${url} preloaded`);
   }
 
   render() {
