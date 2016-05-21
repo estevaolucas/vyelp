@@ -1,0 +1,33 @@
+.vyelp {
+  margin: 20px auto 60px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .5s ease-out;
+}
+
+.vyelp.show {
+  max-height: 220px;
+}
+
+.vyelp.overflow {
+  overflow: inherit;
+}
+
+html body .vyelp .showcase-photo-box a{
+  background-size: contain;
+  width: 250px;
+  height: 250px;
+  display: block;
+}
+
+html body .vyelp button.prev {
+  position: absolute;
+  left: -100px;
+  top: 82px;
+}
+
+html body .vyelp button.next {
+  position: absolute;
+  right: -100px;
+  top: 82px;
+}

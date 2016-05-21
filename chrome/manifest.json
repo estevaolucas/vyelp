@@ -7,6 +7,9 @@
   "permissions": [
     "https://www.yelp.com/biz/*"
   ],
+  "web_accessible_resources": [
+    "css/inject.css"
+  ],
   "content_scripts": [
     {
       "matches": [
@@ -14,6 +17,11 @@
       ],
       "css": [
         "css/inject.css"
+      ]
+    },
+    {
+      "matches": [
+        "https://www.yelp.com/biz/*"
       ],
       "js": [
         "js/jquery.min.js",
