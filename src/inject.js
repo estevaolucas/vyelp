@@ -251,7 +251,8 @@ const html = {
             <h2>${data.snippet.title}</h2>
           </div>
           <div class="modal_body">
-            ${iframe}
+            <iframe height="360" src="//www.youtube.com/embed/${data.id}?rel=0&amp;autoplay=1" frameborder="0" allowfullscreen></iframe>
+
             <div class="modal_section u-bg-color">
               Video loaded from Vyelp chrome extension!
             </div>
