@@ -208,7 +208,7 @@ const html = {
   thubnailItem: (video) => {
     return `<div class="js-photo photo photo-${video.i}">
        <div class="showcase-photo-box">
-          <a href="#" style="background-image:url('${video.thumbnail.url}')"></a>
+          <a href="#" style="background-image:url('${video.thumbnail.url}')"><span /></a>
        </div>
        <div class="photo-box-overlay js-overlay">
           <div class="media-block photo-box-overlay_caption">
@@ -225,20 +225,16 @@ const html = {
 
   prevButton: () => {
     return `<button class="prev ybtn ybtn--big" disabled>
-      <span aria-label="test" style="width: 48px; height: 48px;" class="icon icon--48-chevron-left icon--size-48">
-        <svg class="icon_svg">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#48x48_chevron_left"></use>
-        </svg>
+      <span class="icon icon--48-chevron-left icon--size-48">
+        <svg class="icon_svg"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#48x48_chevron_left"></use></svg>
       </span>
     </button>`;
   },
 
   nextButton: () => {
     return `<button class="next ybtn ybtn--big">
-      <span aria-label="test" style="width: 48px; height: 48px;" class="icon icon--48-chevron-right icon--size-48">
-        <svg class="icon_svg">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#48x48_chevron_right"></use>
-        </svg>
+      <span class="icon icon--48-chevron-right icon--size-48">
+        <svg class="icon_svg"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#48x48_chevron_right"></use></svg>
       </span>
     </button>`;
   },
@@ -253,7 +249,6 @@ const html = {
           </div>
           <div class="modal_body">
             <iframe height="360" src="//www.youtube.com/embed/${data.id.videoId}?rel=0&amp;autoplay=1" frameborder="0" allowfullscreen></iframe>
-
             <div class="modal_section u-bg-color">
               Video loaded from Vyelp chrome extension!
             </div>

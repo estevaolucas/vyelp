@@ -2,13 +2,19 @@
   "name": "Vyelp",
   "version": "0.0.1",
   "manifest_version": 2,
-  "description": "I bet do you want to see videos in Yelp's page! This it for you. It'll allow you to videos direct from Yelp's page",
+  "description": "I bet you would love to see videos in Yelp's page! This extension adds this feature to you! Now you can see YouTube videos direct from Yelp's page",
   "default_locale": "en",
   "permissions": [
     "https://www.yelp.com/biz/*"
   ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
   "web_accessible_resources": [
-    "css/inject.css"
+    "css/inject.css",
+    "icons/icon_play.png"
   ],
   "content_scripts": [
     {

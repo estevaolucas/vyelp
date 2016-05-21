@@ -14,22 +14,38 @@
 }
 
 html body .vyelp .showcase-photo-box a{
-  background-size: contain;
+  background-size: cover;
   width: 250px;
   height: 250px;
   display: block;
 }
-
-html body .vyelp button.prev {
-  position: absolute;
-  left: -100px;
-  top: 82px;
+html body .vyelp .showcase-photo-box a span {
+  background: url('chrome-extension://__MSG_@@extension_id__/icons/icon_play.png') no-repeat center;
+  background-size: 122px;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: background-image 1s ease-in-out;
+}
+html body .vyelp .showcase-photo-box a:hover span{
+  background-image: none;
 }
 
-html body .vyelp button.next {
+html body .vyelp button.prev
+, html body .vyelp button.next {
   position: absolute;
-  right: -100px;
   top: 82px;
+} 
+html body .vyelp button.prev {
+  left: -100px;
+}
+html body .vyelp button.next {
+  right: -100px;
+}
+html body .vyelp button.prev span
+, html body .vyelp button.next span {
+  width: 48px;
+  height: 48px;
 }
 
 .vyelp-modal iframe {
