@@ -63,6 +63,10 @@ class Vyelp {
           $item.hide();
         }
 
+        $item
+          .data('meta', item)
+          .on('click', $.proxy(this.openVideo, this))
+
         this.$container.append($item);
       });
 
@@ -83,6 +87,30 @@ class Vyelp {
 
       this.render();
     }
+  }
+
+  openVideo(e) {
+    let $item = $(e.target).closest('.photo'),
+      meta = $item.data('meta'),
+      $modal = $(html.videoModal(meta.player.embedHtml, meta));
+
+    $modal
+      .show()
+      .appendTo('body')
+      .on('click', $.proxy(this.closeVideo, this))
+      .find('.js-modal-close', $.proxy(this.closeVideo, this))
+  }
+
+  closeVideo(e) {
+    if (e) {
+      let $target = $(e.target);
+        
+      if (!$target.is('.js-modal-close') && !$target.is('.modal')) {
+        return;
+      }
+    }    
+
+    $('.vyelp-modal').remove();
   }
 
   onPaginationClicked(e) {
@@ -143,6 +171,14 @@ class Vyelp {
         this.$container.addClass('overflow');  
       }, 1000);
     }, 1000);
+
+    // close video modal when esc is pressed
+    $(document).keypress($.proxy((e) => { 
+      debugger;
+      if (e.keyCode == 27) { 
+        this.closeVideo();
+      }
+    }, this))
   }
 };
 
@@ -184,5 +220,24 @@ const html = {
         </svg>
       </span>
     </button>`;
+  },
+
+  videoModal: (iframe, data) => {
+    return `<div class="modal modal--large vyelp-modal" data-component-bound="true">
+      <div class="modal_inner">
+        <div class="modal_close js-modal-close">×</div>
+        <div class="modal_dialog" role="dialog"><div class="">
+          <div class="modal_head">
+            <h2>${data.snippet.title}</h2>
+          </div>
+          <div class="modal_body">
+            ${iframe}
+            <div class="modal_section u-bg-color">
+              Video loaded from Vyelp chrome extension!
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`;
   }
 };

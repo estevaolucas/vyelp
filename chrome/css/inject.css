@@ -31,3 +31,7 @@ html body .vyelp button.next {
   right: -100px;
   top: 82px;
 }
+
+.vyelp-modal iframe {
+  width: 100%;
+}
