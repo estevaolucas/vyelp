@@ -40,7 +40,7 @@ class Vyelp {
     
     if (this.videos.length) {
       this.videos.forEach((item, i) => {
-        var $item = $(html.thubnailItem({
+        var $item = $(htmlTemplates.thubnailItem({
             i: i + 1,
             id: item.id.videoId,
             title: item.snippet.title,
@@ -66,11 +66,11 @@ class Vyelp {
       // just add pagination buttons if needed
       if (this.videos.length > 3) {
         // add previous button 
-        this.$prevButton = $(html.prevButton())
+        this.$prevButton = $(htmlTemplates.prevButton())
           .on('click', $.proxy(this.onPaginationClicked, this))
           .prependTo(this.$container);
         // add next button
-        this.$nextButton = $(html.nextButton())
+        this.$nextButton = $(htmlTemplates.nextButton())
           .on('click', $.proxy(this.onPaginationClicked, this))
           .prependTo(this.$container);       
 
@@ -154,7 +154,7 @@ class Vyelp {
   openVideo(e) {
     let $item = $(e.target).closest('.photo'),
       meta = $item.data('meta'),
-      $modal = $(html.videoModal(meta)),
+      $modal = $(htmlTemplates.videoModal(meta)),
       $buttons = $('button.pag', $modal);
 
     $modal
@@ -187,23 +187,33 @@ class Vyelp {
   }
 
   onVideoPrevNextClicked(e) {
-    let $button = $(e.target),
-      $iframe = $('iframe', this.current.$element),
-      currentIndex = this.current.index,
-      data;
+    let $button = $(e.target)
 
     if (!$button.is('button')) {
       $button = $button.closest('button');
     }
 
+    this.paginateVideo($button.is('.prev'));
+  }
+
+  paginateVideo(toPrevious) {
+    let $iframe = $('iframe', this.current.$element),
+      currentIndex = this.current.index,
+      data;
+
+    // exit if is the first or the last video
+    if ((toPrevious && !currentIndex) || (!toPrevious && currentIndex + 1 == this.videos.length)) {
+      return;
+    }
+
     // set a new index
-    $button.is('.prev') ? --currentIndex : ++currentIndex;
+    toPrevious ? --currentIndex : ++currentIndex;
 
     // get right video data
     data = this.videos[currentIndex];
 
     // change iframe
-    $iframe.after(html.iframe(data)).remove();
+    $iframe.after(htmlTemplates.iframe(data)).remove();
 
     // change title
     this.current.$element.find('h2').text(data.snippet.title);
@@ -255,15 +265,32 @@ class Vyelp {
     }, 1000);
 
     // close video modal when esc is pressed
-    $(document).keypress($.proxy((e) => { 
-      if (e.keyCode == 27) { 
-        this.closeVideo();
+    $(document).keydown($.proxy((e) => { 
+      if (!this.current) {
+        return;
+      }
+
+      switch (e.keyCode) {
+        // close modal
+        case 27:
+          this.closeVideo();
+        break;
+
+        // previous video
+        case 37:
+          this.paginateVideo(true);
+        break;
+
+        // next video
+        case 39:
+          this.paginateVideo(false);
+        break; 
       }
     }, this))
   }
 };
 
-const html = {
+const htmlTemplates = {
   thubnailItem: (video) => {
     return `<div class="js-photo photo photo-${video.i}">
        <div class="showcase-photo-box">
@@ -311,9 +338,9 @@ const html = {
             <h2>${data.snippet.title}</h2>
           </div>
           <div class="modal_body">
-            ${html.prevButton()}
-            ${html.iframe(data)}
-            ${html.nextButton()}
+            ${htmlTemplates.prevButton()}
+            ${htmlTemplates.iframe(data)}
+            ${htmlTemplates.nextButton()}
             <div class="modal_section u-bg-color">
               ${chrome.i18n.getMessage("l10nFooterMessage")}
             </div>
