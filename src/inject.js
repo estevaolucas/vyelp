@@ -24,7 +24,17 @@ class Vyelp {
 
   fetchVideos() {
     $.ajax({
-      url: `${YOUTUBE_API}/search?part=snippet&type=video&location=${this.location.latitude},${this.location.longitude}&locationRadius=10km&key=${YOUTUBE_KEY}`,
+      url: `${YOUTUBE_API}/search`,
+      data: {
+        part: 'snippet',
+        type: 'video',
+        location: `${this.location.latitude},${this.location.longitude}`,
+        locationRadius: '250m',
+        order: 'viewCount',
+        maxResults: '50',
+        videoEmbeddable: true,
+        key: YOUTUBE_KEY
+      },
       success: $.proxy(this.buildStructure, this),
       error: function(response) {
         console.log('Error fetching videos', response);
