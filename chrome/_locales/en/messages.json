@@ -1,14 +1,26 @@
 {
   "l10nHeader": {
-    "message":"YouTube videos",
-    "description":"Videos block title"
+    "message": "YouTube videos",
+    "description": "Videos block title"
   },
   "l10nDisclaimer": {
-    "message":"Videos loaded from YouTube that are nearby this bussiness location",
-    "description":"Disclaimer for users about the origin of videos"
+    "message": "Videos loaded from YouTube that are nearby this bussiness location",
+    "description": "Disclaimer for users about the origin of videos"
+  },
+  "l10nFacebookHeader": {
+    "message": "YouTube and Facebook videos",
+    "description": "Facebook block title"
+  },
+  "l10nFacebookDisclaimer": {
+    "message": "Videos loaded from YouTube that are nearby this bussiness location and from business' page in Facebook",
+    "description": "Disclaimer for Facebook users about the origin of videos"
   },
   "l10nFooterMessage": {
-    "message":"You can navigate beteween videos using arrow keys. Press esc to close",
-    "description":"Just a note"
+    "message": "You can navigate beteween videos using arrow keys. Press esc to close",
+    "description": "Just a note"
+  },
+  "l10nFacebookTitle": {
+    "message": "It's a video from Facebook page",
+    "description": "Just a note"
   }
 }
