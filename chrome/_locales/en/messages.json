@@ -8,7 +8,7 @@
     "description":"Disclaimer for users about the origin of videos"
   },
   "l10nFooterMessage": {
-    "message":"Video loaded from Vyelp chrome extension!",
+    "message":"You can navigate beteween videos using arrow keys. Press esc to close",
     "description":"Just a note"
   }
 }
