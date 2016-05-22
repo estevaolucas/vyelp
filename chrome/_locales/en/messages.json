@@ -6,5 +6,9 @@
   "l10nDisclaimer": {
     "message":"Videos loaded from YouTube that are nearby this bussiness location",
     "description":"Disclaimer for users about the origin of videos"
+  },
+  "l10nFooterMessage": {
+    "message":"Video loaded from Vyelp chrome extension!",
+    "description":"Just a note"
   }
 }

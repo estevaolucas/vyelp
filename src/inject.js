@@ -90,31 +90,7 @@ class Vyelp {
     }
   }
 
-  openVideo(e) {
-    let $item = $(e.target).closest('.photo'),
-      meta = $item.data('meta'),
-      $modal = $(html.videoModal(meta));
-
-    $modal
-      .show()
-      .appendTo('body')
-      // close modal when its overlay is clicked
-      .on('click', $.proxy(this.closeVideo, this))
-      .find('.js-modal-close', $.proxy(this.closeVideo, this))
-  }
-
-  closeVideo(e) {
-    if (e) {
-      let $target = $(e.target);
-        
-      if (!$target.is('.js-modal-close') && !$target.is('.modal')) {
-        return;
-      }
-    }    
-
-    $('.vyelp-modal').remove();
-  }
-
+  // carrosel's pagination handler
   onPaginationClicked(e) {
     let $button = $(e.target),
       $visible = this.$items.filter(':visible')
@@ -123,6 +99,7 @@ class Vyelp {
       $button = $button.closest('button');
     }
 
+    // prev case
     if ($button.is('.prev')) {
       let $prev = $visible.first().prev('.photo'),
         $elements = $prev.length ? $prev.add($visible) : $visible;
@@ -143,7 +120,7 @@ class Vyelp {
             .addClass('photo-' + (i + 1));
         }
       })
-
+    // next case
     } else {
       let $next = $visible.last().next('.photo'),
         isToDisable = $next.nextAll('.photo').length == 0;
@@ -174,6 +151,89 @@ class Vyelp {
     }
   }
 
+  openVideo(e) {
+    let $item = $(e.target).closest('.photo'),
+      meta = $item.data('meta'),
+      $modal = $(html.videoModal(meta)),
+      $buttons = $('button.pag', $modal);
+
+    $modal
+      .show()
+      .appendTo('body')
+      // close modal when its overlay is clicked
+      .on('click', $.proxy(this.closeVideo, this))
+      .find('.js-modal-close', $.proxy(this.closeVideo, this));
+
+    // hide prev/next buttons
+    if (this.videos.length == 1) {
+      $button.hide();
+    }
+
+    this.current = {
+      video       : meta,
+      $element    : $modal,
+      index       : this.videos.indexOf(meta),
+      $prevButton : $buttons.filter('.prev'),
+      $nextButton : $buttons.filter('.next')
+    }
+
+    this.current.$prevButton = $buttons.filter('.prev');
+    this.current.$nextButton = $buttons.filter('.next');
+
+    this.videoPaginationButtonsState();
+
+    // event handler
+    $buttons.on('click', $.proxy(this.onVideoPrevNextClicked, this));
+  }
+
+  onVideoPrevNextClicked(e) {
+    let $button = $(e.target),
+      $iframe = $('iframe', this.current.$element),
+      currentIndex = this.current.index,
+      data;
+
+    if (!$button.is('button')) {
+      $button = $button.closest('button');
+    }
+
+    // set a new index
+    $button.is('.prev') ? --currentIndex : ++currentIndex;
+
+    // get right video data
+    data = this.videos[currentIndex];
+
+    // change iframe
+    $iframe.after(html.iframe(data)).remove();
+
+    // change title
+    this.current.$element.find('h2').text(data.snippet.title);
+
+    // update current data
+    this.current.video = data;
+    this.current.index = currentIndex;
+
+    // change pagination buttons state
+    this.videoPaginationButtonsState();
+  }
+
+  videoPaginationButtonsState() {
+    this.current.$prevButton.attr('disabled', !this.current.index);
+    this.current.$nextButton.attr('disabled', this.current.index + 1 == this.videos.length);
+  }
+
+  closeVideo(e) {
+    if (e) {
+      let $target = $(e.target);
+        
+      if (!$target.is('.js-modal-close') && !$target.is('.modal')) {
+        return;
+      }
+    }    
+
+    this.current.$element.remove();
+    this.current = null;  
+  }
+
   // preload image to avoid a blink in pagination trasition
   preloadThumbnail(index) {
     let item = this.videos[index], 
@@ -185,7 +245,7 @@ class Vyelp {
   }
 
   render() {
-    // animation to appear comming from CSS
+    // animation to shows up modal comming from CSS with transition on element
     setTimeout(() => {
       this.$container.addClass('show')
 
@@ -202,7 +262,6 @@ class Vyelp {
     }, this))
   }
 };
-
 
 const html = {
   thubnailItem: (video) => {
@@ -224,7 +283,7 @@ const html = {
   },
 
   prevButton: () => {
-    return `<button class="prev ybtn ybtn--big" disabled>
+    return `<button class="prev pag ybtn ybtn--big" disabled>
       <span class="icon icon--48-chevron-left icon--size-48">
         <svg class="icon_svg"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#48x48_chevron_left"></use></svg>
       </span>
@@ -232,11 +291,15 @@ const html = {
   },
 
   nextButton: () => {
-    return `<button class="next ybtn ybtn--big">
+    return `<button class="next pag ybtn ybtn--big">
       <span class="icon icon--48-chevron-right icon--size-48">
         <svg class="icon_svg"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#48x48_chevron_right"></use></svg>
       </span>
     </button>`;
+  },
+
+  iframe: (data) => {
+    return `<iframe height="360" src="//www.youtube.com/embed/${data.id.videoId}?rel=0&amp;autoplay=1" frameborder="0" allowfullscreen></iframe>`;
   },
 
   videoModal: (data) => {
@@ -248,9 +311,11 @@ const html = {
             <h2>${data.snippet.title}</h2>
           </div>
           <div class="modal_body">
-            <iframe height="360" src="//www.youtube.com/embed/${data.id.videoId}?rel=0&amp;autoplay=1" frameborder="0" allowfullscreen></iframe>
+            ${html.prevButton()}
+            ${html.iframe(data)}
+            ${html.nextButton()}
             <div class="modal_section u-bg-color">
-              Video loaded from Vyelp chrome extension!
+              ${chrome.i18n.getMessage("l10nFooterMessage")}
             </div>
           </div>
         </div>

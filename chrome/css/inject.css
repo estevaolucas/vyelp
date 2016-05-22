@@ -1,18 +1,24 @@
+/* PS: Using Yelp's style guide gave us the chance follow its style and make a very simple CSS file. That's why we didn't use a preprocessor like SASS. */
+
+/*
+ * Vyep box
+ */ 
 .vyelp {
   margin: 40px auto 60px;
   max-height: 0;
   overflow: hidden;
   transition: max-height .5s ease-out;
 }
-
 .vyelp.show {
   max-height: 220px;
 }
-
 .vyelp.overflow {
   overflow: inherit;
 }
 
+/*
+ * Overwriting .photo element
+ */ 
 html body .vyelp .showcase-photo-box a{
   background-size: cover;
   width: 250px;
@@ -21,16 +27,19 @@ html body .vyelp .showcase-photo-box a{
 }
 html body .vyelp .showcase-photo-box a span {
   background: url('chrome-extension://__MSG_@@extension_id__/icons/icon_play.png') no-repeat center;
-  background-size: 122px;
+  background-size: 100px;
   display: block;
   width: 100%;
   height: 100%;
-  transition: background-image 1s ease-in-out;
+  transition: background-size 0.2s ease-in-out;
 }
 html body .vyelp .showcase-photo-box a:hover span{
-  background-image: none;
+  background-size: 80px;
 }
 
+/*
+ * Pagination buttons
+ */ 
 html body .vyelp button.prev
 , html body .vyelp button.next {
   position: absolute;
@@ -43,11 +52,30 @@ html body .vyelp button.next {
   right: -100px;
 }
 html body .vyelp button.prev span
-, html body .vyelp button.next span {
+, html body .vyelp button.next span
+, .vyelp-modal button.prev span
+, .vyelp-modal button.next span {
   width: 48px;
   height: 48px;
 }
 
+/*
+ * Video modal
+ */ 
+.vyelp-modal .modal_inner {
+  overflow: initial;
+}
 .vyelp-modal iframe {
   width: 100%;
+}
+.vyelp-modal button.prev
+, .vyelp-modal button.next {
+  position: absolute;
+  left: -108px;
+  top: 250px;
+  z-index: 1;
+}
+.vyelp-modal button.next {
+  left: auto;
+  right: -108px;
 }
