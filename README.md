@@ -1,4 +1,4 @@
-## How it works
+### How it works
 
 We extract business' geolocation getting a Yelp page's metadata inserted into HTML and with this information we fetch YouTube videos geotagged nearby. Very simple and useful.
 
@@ -8,7 +8,7 @@ You can use arrow keys to navigate between videos. Use esc key to close the vide
 
 To see the extension running, just install it through [the extension page](https://chrome.google.com/webstore/detail/vyelp/lleibkhjpnlieccdncckoedbfodklndm?hl=en-US&gl=BR)
 
-## Requirements
+### Requirements
 
 **NPM** is needed to install all dependencies. 
 
@@ -16,7 +16,7 @@ To see the extension running, just install it through [the extension page](https
 
 
 ### How to run
-Open the **Extension page** (Window -> Extension), check the **Develop Mode** checkbox. Click on **Load unpacked extension...** button and search for `/chrome` folder on in this project root. Just it. Now access some [bussines page](https://www.yelp.com/biz/la-boutique-padaria-francesa-bras%C3%ADlia-2) and violá.
+Open the **Extension page** ([Window -> Extension](chrome://extensions/)), check the **Develop Mode** checkbox. Click on **Load unpacked extension...** button and search for `/chrome` folder on in this project root. Just it. Now access any [bussines page] on Yelp(https://www.yelp.com/biz/la-boutique-padaria-francesa-bras%C3%ADlia-2) and violá. If was found some video near the business address, will appear a box below the map and images thubnail block.
 
 Inside the `/src/inject.js` file we have the all the JS (with ES6 via Babel) code to run the plugin.
 
