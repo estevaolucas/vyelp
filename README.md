@@ -16,7 +16,7 @@ To see the extension running, just install it through [the extension page](https
 
 
 ### How to run
-Open the **Extension page** ([Window -> Extension](chrome://extensions/)), check the **Develop Mode** checkbox. Click on **Load unpacked extension...** button and search for `/chrome` folder on in this project root. Just it. Now access any [bussines page] on Yelp(https://www.yelp.com/biz/la-boutique-padaria-francesa-bras%C3%ADlia-2) and violá. If was found some video near the business address, will appear a box below the map and images thubnail block.
+Open the **Extension page** via [Window -> Extension](chrome://extensions/), check the **Develop Mode** checkbox. Click on **Load unpacked extension...** button and search for `/chrome` folder on in this project root. Just it. Now access any [bussines page] on Yelp(https://www.yelp.com/biz/la-boutique-padaria-francesa-bras%C3%ADlia-2) and violá. If was found some video near the business address, will appear a box below the map and images thubnail block.
 
 Inside the `/src/inject.js` file we have the all the JS (with ES6 via Babel) code to run the plugin.
 
